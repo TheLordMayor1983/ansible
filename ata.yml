@@ -3,4 +3,3 @@ question: Hello, world!
 buttons:
   - Exit: exit
 mandatory: True
----
