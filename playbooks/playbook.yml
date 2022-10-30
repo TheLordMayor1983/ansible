@@ -1,0 +1,20 @@
+---
+- name: Variables Playbook
+  hosts: localhost
+  vars:
+      state: latest
+      user: gcs_scan
+  tasks:
+  - name: Execute Command Date
+    command: date
+  
+  - name: Install Httpd Service
+    yum:
+       become: yes
+       name: httpd 
+       state: present
+       
+  - name: Start Web Server
+    service:
+       name: httd
+       state: startd
