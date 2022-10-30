@@ -1,0 +1,10 @@
+---
+- name: Delete a User
+  hosts: debian_endpoints
+  become: true
+  tasks:
+    - name: user example not present
+      ansible.builtin.user:
+        name: gcs_scan
+        state: "absent"
+        remove: true

@@ -1,0 +1,20 @@
+---
+- name: Add User with Password to Sudoers
+  hosts: debian_endpoints
+  become: true
+  vars:
+    # created with:
+    # python -c 'import crypt; print crypt.crypt("This is my Password", "$1$SomeSalt$")'
+    password: $1$SomeSalt$3qQvRlVMNbQwLs/ap404E.
+
+  tasks:
+    - user: name=gcs_scan password={{password}}
+    
+    - name: add sudo entry
+      lineinfile:
+        path: /etc/sudoers 
+        line: "{{ item.line }}"
+      with_items:
+        - { line: 'gcs_scan ALL=(ALL) NOPASSWD: ALL' }
+
+

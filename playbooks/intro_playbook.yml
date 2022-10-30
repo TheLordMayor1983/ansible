@@ -1,0 +1,36 @@
+---
+- name: Intro to Ansible Playbooks
+  hosts: all
+  vars:
+      state: latest
+
+  tasks:
+  - name: Copy file with owner and permissions
+    ansible.builtin.copy:
+      src: ../hosts
+      dest: /tmp/hosts_backup
+      mode: '0644'
+
+  - name: Upgrade all apt packages
+    become: yes
+    become_method: sudo
+
+  - name: Update cache & Full system update
+    apt:
+    update_cache: true
+    upgrade: dist
+    cache_valid_time: 3600
+    force_apt_get: true
+
+  - name: Install the {{ state }} of package "nmap" using apt
+    become: yes
+    apt:
+      name: "nmap"
+      state: "{{ state }}"
+
+  - name: Install the {{ state }} of package "nmap" using yum
+    become: yes
+    yum:
+      name: "nmap"
+      state: "{{ state }}"
+
