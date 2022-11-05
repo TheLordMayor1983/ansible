@@ -1,32 +1,42 @@
 ---
- - hosts: all
-   vars:
-     - devops_password: 'abcddefsfdfdfdfdfdfdfdfdfdfd'
-   gather_facts: no
-   remote_user: ubuntu
-   become: true
-tasks:
-- name: Add a new user named devops
+- name: Add User with Password to Sudoers
+  hosts: 192.168.0.94
+  become: true
+  vars:
+    # created with:
+    # python -c 'import crypt; print crypt.crypt("This is my Password", "$1$SomeSalt$")'
+    gcs_scan_password: $1$SomeSalt$3qQvRlVMNbQwLs/ap404E.
+    
+   #remote_user: root
+ 
+   tasks:
+ 
+   - name: Add a new user named gcs_scan
      user:
-          name: devops
-          shell: /bin/bash
-          password: "{{ devops_password }}"
-- name: Add devops user to the sudoers
+          name=gcs_scan
+          password={{ gcs_scan_password }}
+ 
+   - name: Add gcs_scan user to the sudoers
      copy:
-          dest: "/etc/sudoers.d/devops"
-          content: "devops  ALL=(ALL)  NOPASSWD: ALL"
-- name: Deploy SSH Key
-     authorized_key: user=devops
-                     key="{{ lookup('file', '/home/devops/.ssh/id_rsa.pub') }}"
+          dest: "/etc/sudoers.d/gcs_scan"
+          content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
+ 
+   - name: Deploy SSH Key
+     authorized_key: user=gcs_scan
+                     key="{{ lookup('file', '/home/gcs_scan/.ssh/id_rsa.pub') }}"
                      state=present
-- name: Disable Password Authentication
+ 
+   - name: Disable Password Authentication
      lineinfile:
            dest=/etc/ssh/sshd_config
            regexp='^PasswordAuthentication'
            line="PasswordAuthentication no"
            state=present
            backup=yes
-- name: Disable Root Login
+     notify:
+       - restart ssh
+ 
+   - name: Disable Root Login
      lineinfile:
            dest=/etc/ssh/sshd_config
            regexp='^PermitRootLogin'
@@ -35,7 +45,8 @@ tasks:
            backup=yes
      notify:
        - restart ssh
-handlers:
+ 
+   handlers:
    - name: restart ssh
      service:
        name=sshd
