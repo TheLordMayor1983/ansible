@@ -17,7 +17,7 @@
     #  with_items:
     #   - { line: 'gcs_scan ALL=(ALL) NOPASSWD: ALL' }
         
-     - name: Add user "gcs_scan" to sudo
+    - name: Add user "gcs_scan" to sudo
       lineinfile:
       path: /etc/sudoers.d/gcs_scan
       line: 'gcs_scan ALL=(ALL) NOPASSWD: ALL'
