@@ -11,4 +11,4 @@
    #- hostname
    #- firewalld
    #- ntp-config
-   - motd
+   - date
