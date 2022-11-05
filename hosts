@@ -36,7 +36,7 @@ centos7 ansible_host=127.0.0.1 ansible_user=gcs_scan ansible_ssh_pass=Goblin19
 ubuntu ansible_host=192.168.91.132 ansible_user=gcs_scan ansible_ssh_private_key_file=/home/gcs_scan/.ssh/id_rsa
 
 [debian_endpoints]
-kali ansible_host=172.19.140.2 ansible_user=gcs_scan ansible_ssh_private_key_file=/home/gcs_scan/.ssh/id_rsa
+kali ansible_host=192.168.0.131 ansible_user=gcs_scan ansible_ssh_private_key_file=/home/gcs_scan/.ssh/id_rsa
 
 [windows_endpoints]
 Mo-Acer ansible_host=192.168.0.171 ansible_connection=winrm ansible_user=mo ansible_password=***Goblin1983
