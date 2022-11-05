@@ -8,16 +8,16 @@
     password: $1$SomeSalt$3qQvRlVMNbQwLs/ap404E.
 
   tasks:
+    user: name=gcs_scan password={{ password }}
+
+  - name: Add gcs_scan user and add it to sudo
     user: name=gcs_scan
           state=present
-          group=primary-group
-          groups="sudo"
-          password={{ password }}
-          comment="Comment"
-    #- name: add sudo entry
-    #  lineinfile:
-    #   path: /etc/sudoers 
-    #   line: "{{ item.line }}"
-    #  with_items:
-    #   - { line: 'gcs_scan ALL=(ALL) NOPASSWD: ALL' }
+          createhome=yes
+    become_method: "sudo"
+
+  - name: Set up authorized keys for the deployer user
+    authorized_key: user=deployer key="{{item}}"
+    with_file:
+      - /home/jaygodse/.ssh/id_rsa.pub
 
