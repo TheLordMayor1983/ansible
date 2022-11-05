@@ -19,7 +19,7 @@
           content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
  
    - name: Deploy SSH Key
-     command: ssh-copy-id -o StrictHostKeyChecking=no gcs_scan@192.168.0.94
+     command: ssh-copy-id -i /home/gcs_scan/.ssh/id_rsa.pub -o StrictHostKeyChecking=no gcs_scan@192.168.0.94
  
    - name: Disable Password Authentication
      lineinfile:
