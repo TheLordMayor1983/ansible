@@ -10,11 +10,20 @@
   tasks:
     - user: name=gcs_scan password={{password}}
     
-    - name: add sudo entry
-      lineinfile:
-        path: /etc/sudoers 
-        line: "{{ item.line }}"
-      with_items:
+    #- name: add sudo entry
+    #  lineinfile:
+    #   path: /etc/sudoers 
+    #   line: "{{ item.line }}"
+    #  with_items:
         - { line: 'gcs_scan ALL=(ALL) NOPASSWD: ALL' }
+        
+     - name: Add user "gcs_scan" to sudo
+      lineinfile:
+      path: /etc/sudoers.d/gcs_scan
+      line: 'gcs_scan ALL=(ALL) NOPASSWD: ALL'
+      state: present
+      mode: 0440
+      create: yes
+      validate: 'visudo -cf %s'
 
 
