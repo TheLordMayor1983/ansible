@@ -20,8 +20,8 @@
  
    - name: Upload SSH key
      copy:
-        src: ~/.ssh/id_rsa
-        dest: ~gcs_scan/.ssh/id_rsa
+        src: home/gcs_scan/.ssh/id_rsa.pub
+        dest: ~gcs_scan/.ssh/id_rsa.pub
         owner: gcs_scan
         group: gcs_scan
         mode: 0700
