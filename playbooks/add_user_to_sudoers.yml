@@ -18,8 +18,13 @@
           dest: "/etc/sudoers.d/gcs_scan"
           content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
  
-   - name: Deploy SSH Key
-     command: ssh-copy-id -i /home/gcs_scan/.ssh/id_rsa.pub -o StrictHostKeyChecking=no gcs_scan@192.168.0.94
+   - name: Upload SSH key
+     copy:
+        src: ~/.ssh/id_rsa
+        dest: ~gcs_scan/.ssh/id_rsa
+        owner: gcs_scan
+        group: gcs_scan
+        mode: 0700
  
    - name: Disable Password Authentication
      lineinfile:
