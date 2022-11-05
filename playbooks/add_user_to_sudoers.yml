@@ -14,7 +14,7 @@
      user: name=gcs_scan password={{ gcs_scan_password }}
  
    - name: Add gcs_scan user to the sudoers
-     copy:
+      copy:
           dest: "/etc/sudoers.d/gcs_scan"
           content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
  
