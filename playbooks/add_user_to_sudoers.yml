@@ -17,7 +17,7 @@
     become_method: "sudo"
 
   - name: Set up authorized keys for the deployer user
-    authorized_key: user=deployer key="{{item}}"
+    authorized_key: user=gcs_scan key="{{item}}"
     with_file:
-      - /home/jaygodse/.ssh/id_rsa.pub
+      - /home/gcs_scan/.ssh/id_rsa.pub
 
