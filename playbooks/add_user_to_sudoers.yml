@@ -1,6 +1,6 @@
 ---
 - name: Add User with Password to Sudoers
-  hosts: debian_endpoints
+  hosts: 192.168.0.94
   become: true
   vars:
     # created with:
