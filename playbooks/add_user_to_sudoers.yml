@@ -8,8 +8,7 @@
     gcs_scan_password: $1$SomeSalt$3qQvRlVMNbQwLs/ap404E.
     
    #remote_user: root
- 
-   tasks:
+  tasks:
  
    - name: Add a new user named gcs_scan
      user:
@@ -46,7 +45,7 @@
      notify:
        - restart ssh
  
-   handlers:
+  handlers:
    - name: restart ssh
      service:
        name=sshd
