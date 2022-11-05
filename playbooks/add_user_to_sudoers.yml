@@ -8,12 +8,13 @@
     password: $1$SomeSalt$3qQvRlVMNbQwLs/ap404E.
 
   tasks:
-    user: name=gcs_scan password={{ password }}
+    #user: name=gcs_scan password={{ password }}
 
   - name: Add gcs_scan user and add it to sudo
     user: name=gcs_scan
           state=present
           createhome=yes
+          password={{ password }}
     become_method: "sudo"
 
   - name: Set up authorized keys for the deployer user
