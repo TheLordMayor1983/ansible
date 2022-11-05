@@ -9,7 +9,7 @@
 
   - name: "Copy the authorized key file from"
     authorized_key:
-      user: "{{gcs_scan}}"
+      user: "{{ansible_user}}"
       state: "{{status}}"
       key: "{{ lookup('file', '{{ key }}')}}"
 
