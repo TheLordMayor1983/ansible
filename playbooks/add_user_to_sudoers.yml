@@ -22,10 +22,6 @@
      copy:
         src: "buffer/{{item.dest}}-id_rsa.pub"
         dest: "/tmp/remote-id_rsa.pub"  
-     when: "{{ item.dest != ansible_hostname }}"
-     with_items: 
-        - { dest: "{{groups['gcs_scan'][1]}}"}
-        - { dest: "{{groups['gcs_scan'][0]}}"}
         
    - name: add the public key into Authorized_keys file to enable Key Auth
      shell: "cat /tmp/remote-id_rsa.pub >> ~/.ssh/authorized_keys"
