@@ -13,23 +13,23 @@
    - name: Add a new user named gcs_scan
      user: name=gcs_scan password={{ gcs_scan_password }}
  
-   - name: Add gcs_scan user to the sudoers
-      copy:
-          dest: "/etc/sudoers.d/gcs_scan"
-          content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
+   - name: Add gcs_scan user to the sudoers 
+     copy:
+        dest: "/etc/sudoers.d/gcs_scan"
+        content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
  
    - name: Copy the file from master to the destination
-      copy:
+     copy:
         src: "buffer/{{item.dest}}-id_rsa.pub"
         dest: "/tmp/remote-id_rsa.pub"  
-      when: "{{ item.dest != ansible_hostname }}"
-      with_items: 
+     when: "{{ item.dest != ansible_hostname }}"
+     with_items: 
         - { dest: "{{groups['app'][1]}}"}
         - { dest: "{{groups['app'][0]}}"}
         
    - name: add the public key into Authorized_keys file to enable Key Auth
-      shell: "cat /tmp/remote-id_rsa.pub >> ~/.ssh/authorized_keys"
-      register: addtoauth
+     shell: "cat /tmp/remote-id_rsa.pub >> ~/.ssh/authorized_keys"
+     register: addtoauth
  
    - name: Disable Password Authentication
      lineinfile:
