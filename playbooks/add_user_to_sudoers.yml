@@ -5,20 +5,41 @@
   vars:
     # created with:
     # python -c 'import crypt; print crypt.crypt("This is my Password", "$1$SomeSalt$")'
-    password: $1$SomeSalt$3qQvRlVMNbQwLs/ap404E.
-
-  tasks:
-    #user: name=gcs_scan password={{ password }}
-
-  - name: Add gcs_scan user and add it to sudo
-    user: name=gcs_scan
-          state=present
-          createhome=yes
-          password={{ password }}
-    become_method: "sudo"
-
-  - name: Set up authorized keys for the deployer user
-    authorized_key: user=gcs_scan key="{{item}}"
-    with_file:
-      - /home/gcs_scan/.ssh/id_rsa.pub
-
+    gcs_scan_password: $1$SomeSalt$3qQvRlVMNbQwLs/ap404E.
+    
+   gather_facts: no
+tasks:
+- name: Add a new user named devops
+     user:
+          name: gcs_scan
+          shell: /bin/bash
+          password: "{{ gcs_scan_password }}"
+- name: Add devops user to the sudoers
+     copy:
+          dest: "/etc/sudoers.d/gcs_scan"
+          content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
+- name: Deploy SSH Key
+     authorized_key: user=gcs_scan
+                     key="{{ lookup('file', '/home/gcs_scan/.ssh/id_rsa.pub') }}"
+                     state=present
+- name: Disable Password Authentication
+     lineinfile:
+           dest=/etc/ssh/sshd_config
+           regexp='^PasswordAuthentication'
+           line="PasswordAuthentication no"
+           state=present
+           backup=yes
+- name: Disable Root Login
+     lineinfile:
+           dest=/etc/ssh/sshd_config
+           regexp='^PermitRootLogin'
+           line="PermitRootLogin no"
+           state=present
+           backup=yes
+     notify:
+       - restart ssh
+handlers:
+   - name: restart ssh
+     service:
+       name=sshd
+       state=restarted
