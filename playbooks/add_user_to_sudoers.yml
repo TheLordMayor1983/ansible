@@ -18,13 +18,18 @@
           dest: "/etc/sudoers.d/gcs_scan"
           content: "gcs_scan  ALL=(ALL)  NOPASSWD: ALL"
  
-   - name: Upload SSH key
-     copy:
-        src: home/gcs_scan/.ssh/id_rsa.pub
-        dest: home/gcs_scan/.ssh/id_rsa.pub
-        owner: gcs_scan
-        group: gcs_scan
-        mode: 0700
+   - name: Copy the file from master to the destination
+      copy:
+        src: "buffer/{{item.dest}}-id_rsa.pub"
+        dest: "/tmp/remote-id_rsa.pub"  
+      when: "{{ item.dest != ansible_hostname }}"
+      with_items: 
+        - { dest: "{{groups['app'][1]}}"}
+        - { dest: "{{groups['app'][0]}}"}
+        
+   - name: add the public key into Authorized_keys file to enable Key Auth
+      shell: "cat /tmp/remote-id_rsa.pub >> ~/.ssh/authorized_keys"
+      register: addtoauth
  
    - name: Disable Password Authentication
      lineinfile:
