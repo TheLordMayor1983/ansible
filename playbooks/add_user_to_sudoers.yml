@@ -22,7 +22,7 @@
  
    - name: Deploy SSH Key
      authorized_key: user=gcs_scan
-                     key="{{ lookup('file', '/home/gcs_scan/.ssh/id_rsa.pub') }}"
+                     key="{{ lookup('file', '~.ssh/id_rsa.pub') }}"
                      state=present
  
    - name: Disable Password Authentication
