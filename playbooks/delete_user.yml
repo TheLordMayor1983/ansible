@@ -5,6 +5,6 @@
   tasks:
     - name: user example not present
       ansible.builtin.user:
-        name: gcs_scan
+        name: user
         state: "absent"
         remove: true
