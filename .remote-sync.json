@@ -12,8 +12,8 @@
     ".remote-sync.json",
     ".git/**"
   ],
-  "username": "root",
-  "password": "Goblin19",
+  "username": "",
+  "password": "",
   "watch": [],
   "transport": "scp"
 }
