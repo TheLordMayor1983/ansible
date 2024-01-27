@@ -3,7 +3,7 @@
   hosts: localhost
   vars:
       state: latest
-      user: gcs_scan
+      user: user
   tasks:
   - name: Execute Command Date
     command: date
